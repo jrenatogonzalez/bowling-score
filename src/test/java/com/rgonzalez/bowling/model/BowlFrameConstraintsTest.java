@@ -31,15 +31,18 @@ class BowlFrameConstraintsTest {
         Integer customMaxRolls = 3;
         Integer customMaxExtraRollsIfSpare = 2;
         Integer customMaxExtraRollsIfStrike = 3;
-        BowlFrameConstraints bowlFrameConstraints = new BowlFrameConstraints(
+        Integer customMaxFrames = 12;
+        BowlFrameConstraints constraints = new BowlFrameConstraints(
                 customMaxPins,
                 customMaxRolls,
                 customMaxExtraRollsIfSpare,
-                customMaxExtraRollsIfStrike);
-        assertThat(bowlFrameConstraints.getMaxPins()).isEqualTo(customMaxPins);
-        assertThat(bowlFrameConstraints.getMaxRolls()).isEqualTo(customMaxRolls);
-        assertThat(bowlFrameConstraints.getMaxExtraRollsIfSpare()).isEqualTo(customMaxExtraRollsIfSpare);
-        assertThat(bowlFrameConstraints.getMaxExtraRollsIfStrike()).isEqualTo(customMaxExtraRollsIfStrike);
+                customMaxExtraRollsIfStrike,
+                customMaxFrames);
+        assertThat(constraints.getMaxPins()).isEqualTo(customMaxPins);
+        assertThat(constraints.getMaxRolls()).isEqualTo(customMaxRolls);
+        assertThat(constraints.getMaxExtraRollsIfSpare()).isEqualTo(customMaxExtraRollsIfSpare);
+        assertThat(constraints.getMaxExtraRollsIfStrike()).isEqualTo(customMaxExtraRollsIfStrike);
+        assertThat(constraints.getMaxFrames()).isEqualTo(customMaxFrames);
     }
 
     @ParameterizedTest
@@ -49,11 +52,13 @@ class BowlFrameConstraintsTest {
         Integer customMaxRolls = 3;
         Integer customMaxExtraRollsIfSpare = 2;
         Integer customMaxExtraRollsIfStrike = 3;
+        Integer customMaxFrames = 12;
         assertThatThrownBy(() -> new BowlFrameConstraints(
                 customMaxPins,
                 customMaxRolls,
                 customMaxExtraRollsIfSpare,
-                customMaxExtraRollsIfStrike))
+                customMaxExtraRollsIfStrike,
+                customMaxFrames))
                 .isInstanceOf(runtimeExceptionClass);
     }
 
@@ -64,11 +69,13 @@ class BowlFrameConstraintsTest {
         Integer customMaxPins = 13;
         Integer customMaxExtraRollsIfSpare = 2;
         Integer customMaxExtraRollsIfStrike = 3;
+        Integer customMaxFrames = 12;
         assertThatThrownBy(() -> new BowlFrameConstraints(
                 customMaxPins,
                 customMaxRolls,
                 customMaxExtraRollsIfSpare,
-                customMaxExtraRollsIfStrike))
+                customMaxExtraRollsIfStrike,
+                customMaxFrames))
                 .isInstanceOf(runtimeExceptionClass);
     }
 
@@ -79,11 +86,13 @@ class BowlFrameConstraintsTest {
         Integer customMaxPins = 3;
         Integer customMaxRolls = 3;
         Integer customMaxExtraRollsIfStrike = 4;
+        Integer customMaxFrames = 12;
         assertThatThrownBy(() -> new BowlFrameConstraints(
                 customMaxPins,
                 customMaxRolls,
                 customMaxExtraRollsIfSpare,
-                customMaxExtraRollsIfStrike))
+                customMaxExtraRollsIfStrike,
+                customMaxFrames))
                 .isInstanceOf(runtimeExceptionClass);
     }
 
@@ -94,11 +103,13 @@ class BowlFrameConstraintsTest {
         Integer customMaxPins = 3;
         Integer customMaxRolls = 3;
         Integer customMaxExtraRollsIfSpare = 3;
+        Integer customMaxFrames = 12;
         assertThatThrownBy(() -> new BowlFrameConstraints(
                 customMaxPins,
                 customMaxRolls,
                 customMaxExtraRollsIfSpare,
-                customMaxExtraRollsIfStrike))
+                customMaxExtraRollsIfStrike,
+                customMaxFrames))
                 .isInstanceOf(runtimeExceptionClass);
     }
 

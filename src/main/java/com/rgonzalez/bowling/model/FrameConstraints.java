@@ -8,4 +8,6 @@ public interface FrameConstraints {
     Integer getMaxExtraRollsIfSpare();
 
     Integer getMaxExtraRollsIfStrike();
+
+    Integer getMaxFrames();
 }
