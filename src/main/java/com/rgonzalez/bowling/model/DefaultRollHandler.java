@@ -78,7 +78,8 @@ public class DefaultRollHandler implements RollHandler {
 
     @Override
     public boolean isFinished() {
-        return getTotalKnockedDownPins().equals(maxPins);
+        return getTotalKnockedDownPins().equals(maxPins) ||
+                size() == maxRolls;
     }
 
     @Override

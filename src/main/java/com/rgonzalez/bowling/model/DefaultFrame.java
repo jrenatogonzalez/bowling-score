@@ -11,6 +11,7 @@ public class DefaultFrame implements Frame {
     private final BowlFrameConstraints constraints;
     private final RollHandler rollsHandler;
     private final RollHandler extraRollsHandler;
+    private Integer previousFrameScore = 0;
 
     public DefaultFrame() {
         this.constraints = new BowlFrameConstraints();
@@ -58,13 +59,18 @@ public class DefaultFrame implements Frame {
     }
 
     @Override
+    public void setPreviousFrameScore(Integer previousFrameScore) {
+        this.previousFrameScore = previousFrameScore;
+    }
+
+    @Override
     public Integer getCumulativeScore() {
-        return null;
+        return previousFrameScore + getScore();
     }
 
     @Override
     public boolean isRollsFinished() {
-        return false;
+        return rollsHandler.isFinished();
     }
 
     @Override

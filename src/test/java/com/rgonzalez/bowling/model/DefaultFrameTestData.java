@@ -53,6 +53,7 @@ public class DefaultFrameTestData {
         return Stream.of(
                 Arguments.of(Arrays.asList(2, 8), Collections.emptyList(), 5, Optional.of(5)),
                 Arguments.of(Arrays.asList(0, 10), Collections.emptyList(), 6, Optional.of(6)),
+                Arguments.of(Arrays.asList(0, 10), Collections.singletonList(4), 6, Optional.empty()),
                 Arguments.of(Collections.singletonList(10), Collections.emptyList(), 4, Optional.of(4)),
                 Arguments.of(Collections.singletonList(10), Collections.emptyList(), 12, Optional.empty()),
                 Arguments.of(Collections.singletonList(10), Collections.singletonList(5), 4, Optional.of(4)),

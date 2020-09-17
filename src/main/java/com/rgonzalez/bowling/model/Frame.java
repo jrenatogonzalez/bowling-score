@@ -10,6 +10,8 @@ public interface Frame {
 
     Integer getScore();
 
+    void setPreviousFrameScore(Integer previousFrameScore);
+
     Integer getCumulativeScore();
 
     boolean isRollsFinished();

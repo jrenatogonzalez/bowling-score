@@ -37,7 +37,7 @@ public class DefaultRollHandlerTestData {
 
     public static Stream<Arguments> provideIsFinishedTestData() {
         return Stream.of(
-                Arguments.of(Arrays.asList(4, 2), false),
+                Arguments.of(Arrays.asList(4, 2), true),
                 Arguments.of(Arrays.asList(6, 4), true),
                 Arguments.of(Collections.singletonList(10), true),
                 Arguments.of(Collections.singletonList(6), false),

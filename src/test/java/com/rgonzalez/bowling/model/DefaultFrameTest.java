@@ -2,6 +2,7 @@ package com.rgonzalez.bowling.model;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -106,6 +107,24 @@ class DefaultFrameTest {
         rolls.forEach(defaultFrame::addRoll);
         boolean result = defaultFrame.isSpare();
         assertThat(result).isEqualTo(expected);
+    }
+
+    @Test
+    void getCumulativeScore_ShouldReturnPreviousFrameScorePlusFrameScore() {
+        defaultFrame.addRoll(4);
+        defaultFrame.addRoll(5);
+        defaultFrame.setPreviousFrameScore(20);
+        Integer result = defaultFrame.getCumulativeScore();
+        assertThat(result).isEqualTo(29);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.rgonzalez.bowling.model.DefaultRollHandlerTestData#provideIsFinishedTestData")
+    void isRollsFinished_WhenMaxPinsReached_ShouldReturnTrue(List<Integer> rolls,
+                                                             boolean expected) {
+        rolls.forEach(defaultFrame::addRoll);
+        boolean result = defaultFrame.isRollsFinished();
+        Assertions.assertThat(result).isEqualTo(expected);
     }
 
     @ParameterizedTest
