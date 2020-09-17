@@ -42,12 +42,12 @@ public class DefaultBowlerFrames implements BowlerFrames {
 
     private Frame chooseFrameToAddRoll() {
         Frame frameToAddRoll;
-        Optional<Frame> currentFrame = getLastFrame();
-        if (currentFrame.isEmpty() || currentFrame.get().isFinished()) {
+        Optional<Frame> optionalCurrentFrame = getLastFrame();
+        if (optionalCurrentFrame.isEmpty() || optionalCurrentFrame.get().isFinished()) {
             appendNewFrame();
             frameToAddRoll = getLastFrame().get();
         } else {
-            frameToAddRoll = currentFrame.get();
+            frameToAddRoll = optionalCurrentFrame.get();
         }
         return frameToAddRoll;
     }
