@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.HashMap;
+
 import static com.rgonzalez.bowling.common.Validations.*;
 import static com.rgonzalez.bowling.test.TestConstants.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -39,6 +41,21 @@ class ValidationsTest {
     void checkIfNonNull_StringValue_ShouldReturnIntegerValue() {
         String testValue = "Test String";
         String result = checkIfNonNull(testValue, ARGUMENT_NAME);
+        assertThat(result).isEqualTo(testValue);
+    }
+
+    @Test
+    void checkIfNonNull_NullObject_ShouldThrowNPE() {
+        Object testValue = null;
+        assertThatThrownBy(() -> checkIfNonNull(testValue, ARGUMENT_NAME))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining(CANNOT_BE_NULL);
+    }
+
+    @Test
+    void checkIfNonNull_ObjectValue_ShouldReturnIntegerValue() {
+        Object testValue = new HashMap<>();
+        Object result = checkIfNonNull(testValue, ARGUMENT_NAME);
         assertThat(result).isEqualTo(testValue);
     }
 

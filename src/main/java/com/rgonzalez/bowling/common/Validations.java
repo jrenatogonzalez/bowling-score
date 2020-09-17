@@ -21,6 +21,12 @@ public class Validations {
                         Optional.ofNullable(argumentName).orElse("")));
     }
 
+    public static Object checkIfNonNull(Object value, String argumentName) {
+        return Objects.requireNonNull(value,
+                String.format(MSG_CANNOT_BE_NULL,
+                        Optional.ofNullable(argumentName).orElse("")));
+    }
+
     public static String checkIfNotBlankOrEmpty(String value, String argumentName) {
         if (value.isBlank() || value.isEmpty()) {
             throw new IllegalArgumentException(String.format(MSG_CANNOT_BE_BLANK_OR_EMPTY, argumentName));
