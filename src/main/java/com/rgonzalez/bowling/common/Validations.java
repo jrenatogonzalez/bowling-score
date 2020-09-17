@@ -7,11 +7,25 @@ public class Validations {
     private static final String MSG_CANNOT_BE_NULL = "%s cannot be null.";
     private static final String MSG_NOT_GREATER_THAN = "%s must be greater than %d";
     private static final String MSG_MUST_BE_POSITIVE = "%s must be a positive integer.";
+    private static final String MSG_CANNOT_BE_BLANK_OR_EMPTY = "%s cannot be blank or empty.";
 
     public static Integer checkIfNonNull(Integer value, String argumentName) {
         return Objects.requireNonNull(value,
                 String.format(MSG_CANNOT_BE_NULL,
                         Optional.ofNullable(argumentName).orElse("")));
+    }
+
+    public static String checkIfNonNull(String value, String argumentName) {
+        return Objects.requireNonNull(value,
+                String.format(MSG_CANNOT_BE_NULL,
+                        Optional.ofNullable(argumentName).orElse("")));
+    }
+
+    public static String checkIfNotBlankOrEmpty(String value, String argumentName) {
+        if (value.isBlank() || value.isEmpty()) {
+            throw new IllegalArgumentException(String.format(MSG_CANNOT_BE_BLANK_OR_EMPTY, argumentName));
+        }
+        return value;
     }
 
     public static Integer checkIfNonNullAndGreaterThan(Integer value, Integer compareToValue, String argumentName) {

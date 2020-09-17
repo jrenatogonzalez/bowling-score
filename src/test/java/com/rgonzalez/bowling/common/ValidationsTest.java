@@ -1,6 +1,8 @@
 package com.rgonzalez.bowling.common;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static com.rgonzalez.bowling.common.Validations.*;
 import static com.rgonzalez.bowling.test.TestConstants.*;
@@ -23,6 +25,29 @@ class ValidationsTest {
         Integer testValue = 45;
         Integer result = checkIfNonNull(testValue, ARGUMENT_NAME);
         assertThat(result).isEqualTo(45);
+    }
+
+    @Test
+    void checkIfNonNull_NullString_ShouldThrowNPE() {
+        String testValue = null;
+        assertThatThrownBy(() -> checkIfNonNull(testValue, ARGUMENT_NAME))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessageContaining(CANNOT_BE_NULL);
+    }
+
+    @Test
+    void checkIfNonNull_StringValue_ShouldReturnIntegerValue() {
+        String testValue = "Test String";
+        String result = checkIfNonNull(testValue, ARGUMENT_NAME);
+        assertThat(result).isEqualTo(testValue);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"   ", "", " "})
+    void checkIfNotBlankOrEmpty_WhenIsBlankOrEmpty_ShouldThrowIllegalArgumentException(String testValue) {
+        assertThatThrownBy(() -> checkIfNotBlankOrEmpty(testValue, ARGUMENT_NAME))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(CANNOT_BE_BLANK_OR_EMPTY);
     }
 
     @Test
