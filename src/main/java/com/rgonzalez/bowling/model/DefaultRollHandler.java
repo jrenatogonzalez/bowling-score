@@ -77,6 +77,11 @@ public class DefaultRollHandler implements RollHandler {
     }
 
     @Override
+    public boolean isFinished() {
+        return getTotalKnockedDownPins().equals(maxPins);
+    }
+
+    @Override
     public Integer pinCapacity() {
         return maxPinsPerRoll ? maxPins * maxRolls : maxPins;
     }

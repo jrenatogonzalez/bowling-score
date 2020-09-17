@@ -10,6 +10,10 @@ public interface Frame {
 
     Integer getScore();
 
+    Integer getCumulativeScore();
+
+    boolean isRollsFinished();
+
     boolean isFinished();
 
     boolean isStrike();

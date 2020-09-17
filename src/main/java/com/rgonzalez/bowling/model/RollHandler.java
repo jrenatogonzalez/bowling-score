@@ -14,5 +14,7 @@ public interface RollHandler {
 
     Integer size();
 
+    boolean isFinished();
+
     Integer pinCapacity();
 }

@@ -119,6 +119,15 @@ class DefaultRollHandlerTest {
                 .isEqualTo(rolls.size());
     }
 
+    @ParameterizedTest
+    @MethodSource("com.rgonzalez.bowling.model.DefaultRollHandlerTestData#provideIsFinishedTestData")
+    void isFinished_WhenTotalPinFallsIsEqualsToMaxPins_ShouldReturnTrueElseFalse(List<Integer> rolls,
+                                                                                 boolean expected) {
+        rolls.forEach(defaultRollHandler::add);
+        boolean result = defaultRollHandler.isFinished();
+        assertThat(result).isEqualTo(expected);
+    }
+
     @Test
     void pinCapacity_WhenPinPerRollCapacity_ShouldReturnMaxPinsMultipliedByMaxRolls() {
         DefaultRollHandler extraRollHandler = new DefaultRollHandler(BowlFrameConstraints.MAX_ROLLS,

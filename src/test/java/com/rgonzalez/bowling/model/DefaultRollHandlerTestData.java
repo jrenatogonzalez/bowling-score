@@ -1,5 +1,7 @@
 package com.rgonzalez.bowling.model;
 
+import org.junit.jupiter.params.provider.Arguments;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +32,16 @@ public class DefaultRollHandlerTestData {
                 Collections.emptyList(),
                 Arrays.asList(8, 2),
                 Arrays.asList(10, 0)
+        );
+    }
+
+    public static Stream<Arguments> provideIsFinishedTestData() {
+        return Stream.of(
+                Arguments.of(Arrays.asList(4, 2), false),
+                Arguments.of(Arrays.asList(6, 4), true),
+                Arguments.of(Collections.singletonList(10), true),
+                Arguments.of(Collections.singletonList(6), false),
+                Arguments.of(Collections.emptyList(), false)
         );
     }
 

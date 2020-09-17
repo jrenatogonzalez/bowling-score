@@ -58,6 +58,16 @@ public class DefaultFrame implements Frame {
     }
 
     @Override
+    public Integer getCumulativeScore() {
+        return null;
+    }
+
+    @Override
+    public boolean isRollsFinished() {
+        return false;
+    }
+
+    @Override
     public boolean isFinished() {
         return (isStrike() && strikeExtraRollsFinished()) ||
                 (isSpare() && spareExtraRollsFinished()) ||
