@@ -31,28 +31,42 @@ class BowlingScoreAppIntegrationTest {
 
     @Test
     void main_WhenFileWithExampleRollouts_ShouldScore167And151() {
-        String[] args = {"bowling-game-normal.txt"};
+        String[] args = {"src/test/resources/bowling-game-normal.txt"};
         String result = getScore(args);
         assertThat(result).isEqualTo(NORMAL_GAME_OUTPUT);
     }
 
     @Test
+    void main_WhenFileWithExampleRollouts2_ShouldScore143And142() {
+        String[] args = {"src/test/resources/bowling-game-normal2.txt"};
+        String result = getScore(args);
+        assertThat(result).isEqualTo(NORMAL_GAME_OUTPUT2);
+    }
+
+    @Test
     void main_WhenFileWithPerfectGame_ShouldScore300() {
-        String[] args = {"bowling-game-perfect.txt"};
+        String[] args = {"src/test/resources/bowling-game-perfect.txt"};
         String result = getScore(args);
         assertThat(result).isEqualTo(PERFECT_GAME_OUTPUT);
     }
 
     @Test
     void main_WhenFileWithAllZeros_ShouldScoreZero() {
-        String[] args = {"bowling-game-zero.txt"};
+        String[] args = {"src/test/resources/bowling-game-zero.txt"};
         String result = getScore(args);
         assertThat(result).isEqualTo(ZERO_GAME_OUTPUT);
     }
 
     @Test
+    void main_WhenFileWithInvalidData_ShouldPrintMessage() {
+        String[] args = {"src/test/resources/bowling-game-invalid.txt"};
+        String result = getScore(args);
+        assertThat(result).contains(FILE_EMPTY_OR_INVALID);
+    }
+
+    @Test
     void main_WhenFileNotFound_ShouldPrintMessage() {
-        String[] args = {"file-not-exists.txt"};
+        String[] args = {"src/test/resources/file-not-exists.txt"};
         String result = getScore(args);
         assertThat(result).contains(FILE_NOT_FOUND);
     }

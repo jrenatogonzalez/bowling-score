@@ -29,8 +29,13 @@ public class BowlingScoreApp {
         BowlingScoring bowlingScoring = new TraditionalBowlingScoring();
         BowlingScorePrinter bowlingScorePrinter = new DefaultBowlingScorePrinter();
         BowlingScoreService bowlingScoreService = new DefaultBowlingScoreService(bowlingScoring, bowlingScorePrinter);
-        return bowlingScoreService.getScoreForBowlingGame(bowlingGameReader)
+        String score = bowlingScoreService.getScoreForBowlingGame(bowlingGameReader)
                 .collect(Collectors.joining());
+        if (score.isEmpty() || score.isBlank()) {
+            System.out.println("The file is empty or contains no valid data entries " +
+                    "(Be sure fields are tab separated, not by spaces)");
+        }
+        return score;
     }
 
 }
