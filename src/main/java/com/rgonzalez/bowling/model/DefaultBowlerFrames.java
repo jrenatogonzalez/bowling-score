@@ -3,6 +3,7 @@ package com.rgonzalez.bowling.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class DefaultBowlerFrames implements BowlerFrames {
@@ -30,26 +31,61 @@ public class DefaultBowlerFrames implements BowlerFrames {
     @Override
     public Optional<Integer> addRoll(int knockedDownPins) {
         if (!isFinished()) {
-            Frame frameToAddRoll = chooseFrameToAddRoll();
-            if (frameToAddRoll.isStrike() || frameToAddRoll.isSpare()) {
-                return frameToAddRoll.addExtraRoll(knockedDownPins);
+            int currentFrameIndex = getCurrentFrameIndex();
+            Frame currentFrame = frames.get(currentFrameIndex);
+            Optional<Integer> pinFalls;
+            if (currentFrame.isRollsFinished() && isStrikeOrSpare(currentFrame)) {
+                pinFalls = currentFrame.addExtraRoll(knockedDownPins);
             } else {
-                return frameToAddRoll.addRoll(knockedDownPins);
+                pinFalls = currentFrame.addRoll(knockedDownPins);
             }
+            addExtraRoll(this::isStrike, pinFalls, currentFrameIndex - 1);
+            addExtraRoll(this::isStrikeOrSpare, pinFalls, currentFrameIndex);
+            return pinFalls;
         }
         return Optional.empty();
     }
 
-    private Frame chooseFrameToAddRoll() {
-        Frame frameToAddRoll;
-        Optional<Frame> optionalCurrentFrame = getLastFrame();
-        if (optionalCurrentFrame.isEmpty() || optionalCurrentFrame.get().isFinished()) {
-            appendNewFrame();
-            frameToAddRoll = getLastFrame().get();
-        } else {
-            frameToAddRoll = optionalCurrentFrame.get();
+    private void addExtraRoll(
+            Function<Frame, Boolean> frameCondition,
+            Optional<Integer> knockedDownPins,
+            int currentFrameIndex) {
+        int previousFrameIndex = currentFrameIndex - 1;
+        if (knockedDownPins.isPresent() && previousFrameIndex >= 0) {
+            Frame previousFrame = frames.get(previousFrameIndex);
+            if (frameCondition.apply(previousFrame)) {
+                previousFrame.addExtraRoll(knockedDownPins.get());
+            }
         }
-        return frameToAddRoll;
+        if (currentFrameIndex >= 0) {
+            updatePreviousFrameScore(previousFrameIndex, frames.get(currentFrameIndex));
+        }
+    }
+
+    private void updatePreviousFrameScore(int previousFrameIndex, Frame currentFrame) {
+        if (previousFrameIndex >= 0) {
+            Frame previousFrame = frames.get(previousFrameIndex);
+            currentFrame.setPreviousFrameScore(previousFrame.getCumulativeScore());
+        }
+    }
+
+    private Integer getCurrentFrameIndex() {
+        if (frames.isEmpty()) {
+            appendNewFrame();
+        }
+        Frame lastFrame = getLastFrame().get();
+        if (lastFrame.isRollsFinished() && frames.size() < constraints.getMaxFrames()) {
+            appendNewFrame();
+        }
+        return frames.size() - 1;
+    }
+
+    private boolean isStrikeOrSpare(Frame frame) {
+        return frame.isSpare() || frame.isStrike();
+    }
+
+    private boolean isStrike(Frame frame) {
+        return frame.isStrike();
     }
 
     private void appendNewFrame() {

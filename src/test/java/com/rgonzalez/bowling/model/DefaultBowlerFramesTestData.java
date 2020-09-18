@@ -29,7 +29,7 @@ public class DefaultBowlerFramesTestData {
                 Arguments.of(Arrays.asList(2, 3), 5),
                 Arguments.of(Collections.singletonList(3), 5),
                 Arguments.of(Collections.emptyList(), 6),
-                Arguments.of(Arrays.asList(10, 10, 10), 7),
+                Arguments.of(Arrays.asList(10, 2), 7),
                 Arguments.of(Arrays.asList(2, 8, 10), 6)
         );
     }
@@ -45,10 +45,10 @@ public class DefaultBowlerFramesTestData {
     public static Stream<Arguments> provideFinishedRollsForBowlerFrames() {
         return Stream.of(
                 Arguments.of(Arrays.asList(2, 3, 2, 5)),
-                Arguments.of(Arrays.asList(10, 3, 6, 1, 5)),
+                Arguments.of(Arrays.asList(10, 3, 6)),
                 Arguments.of(Arrays.asList(10, 3, 7, 5, 2)),
                 Arguments.of(Arrays.asList(10, 10, 10, 8, 2, 10)),
-                Arguments.of(Arrays.asList(10, 3, 10, 10, 10, 10))
+                Arguments.of(Arrays.asList(10, 3, 2, 10, 10, 10))
         );
     }
 
@@ -64,15 +64,15 @@ public class DefaultBowlerFramesTestData {
 
     public static Stream<Arguments> provideRollsForScore() {
         return Stream.of(
+                Arguments.of(Arrays.asList(10, 3, 6), 28),
                 Arguments.of(Arrays.asList(2, 3, 2, 5), 12),
-                Arguments.of(Arrays.asList(10, 3, 6, 1, 5), 25),
-                Arguments.of(Arrays.asList(10, 3, 7, 5, 2), 27),
-                Arguments.of(Arrays.asList(10, 10, 10, 8, 2, 10), 50),
-                Arguments.of(Arrays.asList(10, 3, 10, 10, 10, 10), 53),
+                Arguments.of(Arrays.asList(10, 3, 7, 5), 35),
+                Arguments.of(Arrays.asList(10, 10, 10, 8), 58),
+                Arguments.of(Arrays.asList(10, 3, 10, 10, 10, 10), 16),
                 Arguments.of(Collections.singletonList(4), 4),
                 Arguments.of(Arrays.asList(0, 2), 2),
                 Arguments.of(Collections.singletonList(0), 0),
-                Arguments.of(Arrays.asList(10, 3), 13),
+                Arguments.of(Arrays.asList(10, 3), 16),
                 Arguments.of(Arrays.asList(2, 8), 10),
                 Arguments.of(Arrays.asList(3, 7), 10),
                 Arguments.of(Collections.emptyList(), 0)

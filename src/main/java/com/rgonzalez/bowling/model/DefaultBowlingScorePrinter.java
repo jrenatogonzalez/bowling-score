@@ -10,9 +10,13 @@ public class DefaultBowlingScorePrinter implements BowlingScorePrinter {
     }
 
     private String getFinalScore(BowlerFrames bowlerFrames) {
-        return String.format("%s: %d",
-                bowlerFrames.getBowlerName(),
-                bowlerFrames.getScore());
+        StringBuilder sb = new StringBuilder(bowlerFrames.getBowlerName());
+        sb.append(":\t");
+        bowlerFrames.getFrames()
+                .forEach(frame ->
+                        sb.append(frame.getCumulativeScore())
+                                .append("\t"));
+        return sb.toString();
     }
 
 }

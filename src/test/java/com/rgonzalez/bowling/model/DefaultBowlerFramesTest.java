@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static com.rgonzalez.bowling.model.DefaultBowlerFramesTestData.createShortBowlerFrames;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -28,7 +29,7 @@ class DefaultBowlerFramesTest {
 
     @ParameterizedTest
     @MethodSource("com.rgonzalez.bowling.model.DefaultBowlerFramesTestData#provideRollsBeforeFinish")
-    void addRoll_WhenRollBeforeFinish_ShouldReturnTestRoll(List<Integer> previousRolls, Integer testRoll) {
+    void addRoll_WhenBowlerFramesWillFinish_ShouldReturnTestRoll(List<Integer> previousRolls, Integer testRoll) {
         DefaultBowlerFrames shortBowlerFrames = createShortBowlerFrames();
         previousRolls.forEach(shortBowlerFrames::addRoll);
         Optional<Integer> result = shortBowlerFrames.addRoll(testRoll);
@@ -37,7 +38,7 @@ class DefaultBowlerFramesTest {
 
     @ParameterizedTest
     @MethodSource("com.rgonzalez.bowling.model.DefaultBowlerFramesTestData#provideRollsAfterFinish")
-    void addRoll_WhenRollAfterFinish_ShouldReturnEmptyOptional(List<Integer> previousRolls, Integer testRoll) {
+    void addRoll_WhenBowlerFramesFinished_ShouldReturnEmptyOptional(List<Integer> previousRolls, Integer testRoll) {
         DefaultBowlerFrames shortBowlerFrames = createShortBowlerFrames();
         previousRolls.forEach(shortBowlerFrames::addRoll);
         Optional<Integer> result = shortBowlerFrames.addRoll(testRoll);
@@ -75,6 +76,22 @@ class DefaultBowlerFramesTest {
         rolls.forEach(shortBowlerFrames::addRoll);
         Integer result = shortBowlerFrames.getScore();
         assertThat(result).isEqualTo(expected);
+    }
+
+    @Test
+    void getScore_WhenAllRollsAreZero_ShouldReturnZero() {
+        IntStream.range(0, 10)
+                .forEach(i -> defaultBowlerFrames.addRoll(0));
+        Integer result = defaultBowlerFrames.getScore();
+        assertThat(result).isEqualTo(0);
+    }
+
+    @Test
+    void getScore_WhenAllRollsAreStrike_ShouldReturn300() {
+        IntStream.range(0, 12)
+                .forEach(i -> defaultBowlerFrames.addRoll(10));
+        Integer result = defaultBowlerFrames.getScore();
+        assertThat(result).isEqualTo(300);
     }
 
 }
