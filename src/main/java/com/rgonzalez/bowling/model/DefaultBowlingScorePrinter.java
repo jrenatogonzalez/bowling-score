@@ -36,7 +36,7 @@ public class DefaultBowlingScorePrinter implements BowlingScorePrinter {
 
     private String bowlerPinfalls(Stream<Frame> frames) {
         List<Frame> framesList = frames.collect(Collectors.toList());
-        StringBuilder sb = new StringBuilder("Pinfalls\t");
+        StringBuilder sb = new StringBuilder("Pinfalls").append("\t");
         IntStream.range(0, framesList.size())
                 .forEach(i -> sb.append(bowlerFrame(framesList.get(i), i == (framesList.size() - 1))));
         return sb.toString();
