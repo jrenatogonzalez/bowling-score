@@ -33,16 +33,16 @@ public class DefaultRollHandler implements RollHandler {
     public Optional<Integer> add(int knockedDownPins) {
         checkIfIsPositive(knockedDownPins, "knockedDownPins");
         if (willExceedMaxRolls()) {
-            log.warning("Request to add a new roll was rejected, it will exceed max rolls.");
+            log.fine("Request to add a new roll was rejected, it will exceed max rolls.");
             return Optional.empty();
         }
         if (willExceedRollPinCapacity(knockedDownPins)) {
-            log.warning(String.format("Request to add %d knockedDownPins was rejected, it will exceed max pins per roll.",
+            log.fine(String.format("Request to add %d knockedDownPins was rejected, it will exceed max pins per roll.",
                     knockedDownPins));
             return Optional.empty();
         }
         if (willExceedCapacity(knockedDownPins)) {
-            log.warning(String.format("Request to add %d knockedDownPins was rejected, it will exceed max pins.",
+            log.fine(String.format("Request to add %d knockedDownPins was rejected, it will exceed max pins.",
                     knockedDownPins));
             return Optional.empty();
         }

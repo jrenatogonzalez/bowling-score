@@ -46,7 +46,7 @@ public class DefaultFrame implements Frame {
                 (isSpare() && !spareExtraRollsFinished())) {
             result = extraRollsHandler.add(knockedDownPins);
         } else {
-            log.warning("Extra roll rejected, no more extra rolls allowed.");
+            log.fine("Extra roll rejected, no more extra rolls allowed.");
             result = Optional.empty();
         }
         return result;
