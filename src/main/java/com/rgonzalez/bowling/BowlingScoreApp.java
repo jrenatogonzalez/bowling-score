@@ -11,12 +11,15 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 
 public class BowlingScoreApp {
-
     public static void main(String[] args) {
         BowlingScoreApp bowlingScoreApp = new BowlingScoreApp();
         try {
-            FileUtils fileUtils = new FileUtils();
-            System.out.print(bowlingScoreApp.getScore(fileUtils.getReader(args)));
+            if (args != null) {
+                FileUtils fileUtils = new FileUtils();
+                System.out.print(bowlingScoreApp.getScore(fileUtils.getReader(args)));
+            } else {
+                System.out.println("Input file must be specified.");
+            }
         } catch (IOException e) {
             System.out.println(String.format("IOError trying to open then file: %s", e.getMessage()));
         }

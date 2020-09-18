@@ -56,7 +56,11 @@ public class DefaultBowlingScorePrinter implements BowlingScorePrinter {
         StringBuilder sb = new StringBuilder();
         if (lastFrame) {
             sb.append("X").append("\t");
-            frame.getExtraRolls().forEach(roll -> sb.append(roll.equals(10) ? "X\t" : String.valueOf(roll) + "\t"));
+            sb.append(
+                    frame.getExtraRolls()
+                            .map(roll -> roll == 10 ? "X" : String.valueOf(roll))
+                            .collect(Collectors.joining("\t"))
+            );
             sb.append("\n");
         } else {
             sb.append("\t").append("X").append("\t");
@@ -80,9 +84,14 @@ public class DefaultBowlingScorePrinter implements BowlingScorePrinter {
 
     private String bowlerSimpleFrame(Frame frame, boolean lastFrame) {
         StringBuilder sb = new StringBuilder();
-        frame.getRolls().forEach(roll -> sb.append(roll).append("\t"));
+        sb.append(frame.getRolls()
+                .map(roll -> String.valueOf(roll))
+                .collect(Collectors.joining("\t"))
+        );
         if (lastFrame) {
             sb.append("\n");
+        } else {
+            sb.append("\t");
         }
         return sb.toString();
     }
