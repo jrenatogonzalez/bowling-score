@@ -16,7 +16,6 @@ public class DefaultRollHandler implements RollHandler {
     private boolean maxPinsPerRoll = false;
     private final List<Integer> rolls = new ArrayList<>();
 
-
     public DefaultRollHandler(Integer maxRolls, Integer maxPins, boolean maxPinsPerRoll) {
         this.maxRolls = maxRolls;
         this.maxPins = maxPins;
