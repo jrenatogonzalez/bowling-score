@@ -6,7 +6,6 @@ import com.rgonzalez.bowling.model.DefaultBowlingScorePrinter;
 import com.rgonzalez.bowling.model.TraditionalBowlingScoring;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -17,11 +16,11 @@ public class BowlingScoreApp {
 
     public static void main(String[] args) {
         BowlingScoreApp bowlingScoreApp = new BowlingScoreApp();
-        System.out.print(
-                bowlingScoreApp.getScore(
-                        bowlingScoreApp.getReader(args)
-                )
-        );
+        try {
+            System.out.print(bowlingScoreApp.getScore(bowlingScoreApp.getReader(args)));
+        } catch (IOException e) {
+            System.out.println(String.format("IOError trying to open then file: %s", e.getMessage()));
+        }
     }
 
     public String getScore(BufferedReader bowlingGameReader) {
@@ -37,17 +36,9 @@ public class BowlingScoreApp {
                 .collect(Collectors.joining(" "));
     }
 
-    private BufferedReader getReader(String[] args) {
+    private BufferedReader getReader(String[] args) throws IOException {
         String filename = getFileName(args);
-        try (BufferedReader bufferedReader = Files.newBufferedReader(Paths.get(filename))) {
-            return bufferedReader;
-        } catch (FileNotFoundException e) {
-            System.out.println(String.format("File '%s' not found.", filename));
-            return null;
-        } catch (IOException e) {
-            System.out.println(String.format("IOError trying to open file: %s", filename));
-            return null;
-        }
+        return Files.newBufferedReader(Paths.get(filename));
     }
 
 }
