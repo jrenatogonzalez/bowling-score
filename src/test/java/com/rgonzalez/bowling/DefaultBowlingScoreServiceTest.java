@@ -16,6 +16,6 @@ class DefaultBowlingScoreServiceTest {
                 new TraditionalBowlingScoring(),
                 new DefaultBowlingScorePrinter());
         Stream<String> result = bowlingScoreService.getScoreForBowlingGame(getValidResultsTestData());
-        result.forEach(System.out::println);
+        result.forEach(System.out::print);
     }
 }
