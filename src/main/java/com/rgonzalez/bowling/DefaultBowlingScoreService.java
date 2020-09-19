@@ -23,7 +23,7 @@ public class DefaultBowlingScoreService implements BowlingScoreService {
         bowlingFileParser.getResults()
                 .forEach(bowlingResults ->
                         bowlingScoring.addRoll(bowlingResults.getBowlerName(),
-                                bowlingResults.getResult()));
+                                bowlingResults.getChance()));
         return bowlingScorePrinter.printScore(bowlingScoring.getBowlerFrames());
     }
 }

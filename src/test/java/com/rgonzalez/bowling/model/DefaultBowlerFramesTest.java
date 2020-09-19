@@ -31,8 +31,10 @@ class DefaultBowlerFramesTest {
     @MethodSource("com.rgonzalez.bowling.model.DefaultBowlerFramesTestData#provideRollsBeforeFinish")
     void addRoll_WhenBowlerFramesWillFinish_ShouldReturnTestRoll(List<Integer> previousRolls, Integer testRoll) {
         DefaultBowlerFrames shortBowlerFrames = createShortBowlerFrames();
-        previousRolls.forEach(shortBowlerFrames::addRoll);
-        Optional<Integer> result = shortBowlerFrames.addRoll(testRoll);
+        previousRolls.stream()
+                .map(Chance::with)
+                .forEach(shortBowlerFrames::addRoll);
+        Optional<Integer> result = shortBowlerFrames.addRoll(Chance.with(testRoll));
         assertThat(result).isEqualTo(Optional.of(testRoll));
     }
 
@@ -40,8 +42,10 @@ class DefaultBowlerFramesTest {
     @MethodSource("com.rgonzalez.bowling.model.DefaultBowlerFramesTestData#provideRollsAfterFinish")
     void addRoll_WhenBowlerFramesFinished_ShouldReturnEmptyOptional(List<Integer> previousRolls, Integer testRoll) {
         DefaultBowlerFrames shortBowlerFrames = createShortBowlerFrames();
-        previousRolls.forEach(shortBowlerFrames::addRoll);
-        Optional<Integer> result = shortBowlerFrames.addRoll(testRoll);
+        previousRolls.stream()
+                .map(Chance::with)
+                .forEach(shortBowlerFrames::addRoll);
+        Optional<Integer> result = shortBowlerFrames.addRoll(Chance.with(testRoll));
         assertThat(result).isEqualTo(Optional.empty());
     }
 
@@ -49,7 +53,9 @@ class DefaultBowlerFramesTest {
     @MethodSource("com.rgonzalez.bowling.model.DefaultBowlerFramesTestData#provideFinishedRollsForBowlerFrames")
     void isFinished_WhenAllFramesFinished_ShouldReturnTrue(List<Integer> rolls) {
         DefaultBowlerFrames shortBowlerFrames = createShortBowlerFrames();
-        rolls.forEach(shortBowlerFrames::addRoll);
+        rolls.stream()
+                .map(Chance::with)
+                .forEach(shortBowlerFrames::addRoll);
         boolean result = shortBowlerFrames.isFinished();
         assertThat(result).isTrue();
     }
@@ -64,7 +70,9 @@ class DefaultBowlerFramesTest {
     @MethodSource("com.rgonzalez.bowling.model.DefaultBowlerFramesTestData#provideNotFinishedRollsForBowlerFrames")
     void isFinished_WhenLastFrameNotFinished_ShouldReturnFalse(List<Integer> rolls) {
         DefaultBowlerFrames shortBowlerFrames = createShortBowlerFrames();
-        rolls.forEach(shortBowlerFrames::addRoll);
+        rolls.stream()
+                .map(Chance::with)
+                .forEach(shortBowlerFrames::addRoll);
         boolean result = shortBowlerFrames.isFinished();
         assertThat(result).isFalse();
     }
@@ -73,7 +81,9 @@ class DefaultBowlerFramesTest {
     @MethodSource("com.rgonzalez.bowling.model.DefaultBowlerFramesTestData#provideRollsForScore")
     void getScore(List<Integer> rolls, Integer expected) {
         DefaultBowlerFrames shortBowlerFrames = createShortBowlerFrames();
-        rolls.forEach(shortBowlerFrames::addRoll);
+        rolls.stream()
+                .map(Chance::with)
+                .forEach(shortBowlerFrames::addRoll);
         Integer result = shortBowlerFrames.getScore();
         assertThat(result).isEqualTo(expected);
     }
@@ -81,7 +91,7 @@ class DefaultBowlerFramesTest {
     @Test
     void getScore_WhenAllRollsAreZero_ShouldReturnZero() {
         IntStream.range(0, 10)
-                .forEach(i -> defaultBowlerFrames.addRoll(0));
+                .forEach(i -> defaultBowlerFrames.addRoll(Chance.with(0)));
         Integer result = defaultBowlerFrames.getScore();
         assertThat(result).isEqualTo(0);
     }
@@ -89,7 +99,7 @@ class DefaultBowlerFramesTest {
     @Test
     void getScore_WhenAllRollsAreStrike_ShouldReturn300() {
         IntStream.range(0, 12)
-                .forEach(i -> defaultBowlerFrames.addRoll(10));
+                .forEach(i -> defaultBowlerFrames.addRoll(Chance.with(10)));
         Integer result = defaultBowlerFrames.getScore();
         assertThat(result).isEqualTo(300);
     }

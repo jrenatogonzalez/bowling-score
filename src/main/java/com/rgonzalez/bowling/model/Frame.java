@@ -4,9 +4,9 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface Frame {
-    Optional<Integer> addRoll(Integer knockedDownPins);
+    Optional<Integer> addRoll(Chance chance);
 
-    Optional<Integer> addExtraRoll(Integer knockedDownPins);
+    Optional<Integer> addExtraRoll(Chance chance);
 
     Integer getScore();
 
@@ -22,7 +22,7 @@ public interface Frame {
 
     boolean isSpare();
 
-    Stream<Integer> getRolls();
+    Stream<Chance> getRolls();
 
-    Stream<Integer> getExtraRolls();
+    Stream<Chance> getExtraRolls();
 }

@@ -5,18 +5,10 @@ import lombok.Getter;
 @Getter
 public class BowlerResults {
     private String bowlerName;
-    private Integer result;
+    private Chance chance;
 
-    public BowlerResults(String bowlerName, Integer result) {
+    public BowlerResults(String bowlerName, Chance chance) {
         this.bowlerName = bowlerName;
-        this.result = result;
-    }
-
-    @Override
-    public String toString() {
-        return "BowlerResults{" +
-                "bowlerName='" + bowlerName + '\'' +
-                ", result=" + result +
-                '}';
+        this.chance = chance;
     }
 }

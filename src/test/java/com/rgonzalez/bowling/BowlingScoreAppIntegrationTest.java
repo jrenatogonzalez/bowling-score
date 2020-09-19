@@ -58,6 +58,14 @@ class BowlingScoreAppIntegrationTest {
     }
 
     @Test
+    void main_WhenFileWithAllFouls_ShouldScoreZero() {
+        String[] args = {"src/test/resources/bowling-game-foul.txt"};
+        String result = getScore(args);
+        assertThat(result).isEqualTo(FOUL_GAME_OUTPUT);
+    }
+
+
+    @Test
     void main_WhenFileWithInvalidData_ShouldPrintMessage() {
         String[] args = {"src/test/resources/bowling-game-invalid.txt"};
         String result = getScore(args);

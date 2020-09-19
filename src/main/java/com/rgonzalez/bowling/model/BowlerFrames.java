@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 public interface BowlerFrames {
     String getBowlerName();
 
-    Optional<Integer> addRoll(int knockedDownPins);
+    Optional<Integer> addRoll(Chance chance);
 
     boolean isFinished();
 

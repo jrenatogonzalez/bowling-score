@@ -23,7 +23,7 @@ class TraditionalBowlingScoringTest {
     @Test
     void addRoll_WhenNewBowlerRoll_ShouldAddNewBowlerFrame() {
         long framesCountBeforeAddRoll = traditionalBowlingScoring.getBowlerFrames().count();
-        Optional<Integer> result = traditionalBowlingScoring.addRoll("John", 8);
+        Optional<Integer> result = traditionalBowlingScoring.addRoll("John", Chance.with(8));
         long framesCountAfterAddRoll = traditionalBowlingScoring.getBowlerFrames().count();
         assertThat(framesCountBeforeAddRoll).isEqualTo(0);
         assertThat(framesCountAfterAddRoll).isEqualTo(1);
@@ -55,6 +55,6 @@ class TraditionalBowlingScoringTest {
     private void addBowlerRolls(Map<String, List<Integer>> bowlerRolls) {
         bowlerRolls.keySet()
                 .forEach(name -> bowlerRolls.get(name)
-                        .forEach(roll -> traditionalBowlingScoring.addRoll(name, roll)));
+                        .forEach(roll -> traditionalBowlingScoring.addRoll(name, Chance.with(roll))));
     }
 }

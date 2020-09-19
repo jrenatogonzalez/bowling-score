@@ -35,16 +35,16 @@ public class DefaultFrame implements Frame {
     }
 
     @Override
-    public Optional<Integer> addRoll(Integer knockedDownPins) {
-        return rollsHandler.add(knockedDownPins);
+    public Optional<Integer> addRoll(Chance chance) {
+        return rollsHandler.add(chance);
     }
 
     @Override
-    public Optional<Integer> addExtraRoll(Integer knockedDownPins) {
+    public Optional<Integer> addExtraRoll(Chance chance) {
         Optional<Integer> result;
         if ((isStrike() && !strikeExtraRollsFinished()) ||
                 (isSpare() && !spareExtraRollsFinished())) {
-            result = extraRollsHandler.add(knockedDownPins);
+            result = extraRollsHandler.add(chance);
         } else {
             log.fine("Extra roll rejected, no more extra rolls allowed.");
             result = Optional.empty();
@@ -98,12 +98,12 @@ public class DefaultFrame implements Frame {
     }
 
     @Override
-    public Stream<Integer> getRolls() {
+    public Stream<Chance> getRolls() {
         return rollsHandler.getRolls();
     }
 
     @Override
-    public Stream<Integer> getExtraRolls() {
+    public Stream<Chance> getExtraRolls() {
         return extraRollsHandler.getRolls();
     }
 

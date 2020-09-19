@@ -4,13 +4,13 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface RollHandler {
-    Optional<Integer> add(int knockedDownPins);
+    Optional<Integer> add(Chance chance);
 
     Optional<Integer> getKnockedDownPins(int rollIndex);
 
     Integer getTotalKnockedDownPins();
 
-    Stream<Integer> getRolls();
+    Stream<Chance> getRolls();
 
     Integer size();
 

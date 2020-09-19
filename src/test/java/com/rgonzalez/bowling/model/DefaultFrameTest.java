@@ -30,8 +30,10 @@ class DefaultFrameTest {
             List<Integer> previousRolls,
             Integer rollToTest,
             Optional<Integer> expected) {
-        previousRolls.forEach(defaultFrame::addRoll);
-        Optional<Integer> result = defaultFrame.addRoll(rollToTest);
+        previousRolls.stream()
+                .map(Chance::with)
+                .forEach(defaultFrame::addRoll);
+        Optional<Integer> result = defaultFrame.addRoll(Chance.with(rollToTest));
         assertThat(result).isEqualTo(expected);
     }
 
@@ -40,8 +42,10 @@ class DefaultFrameTest {
     void addRoll_WhenNotValidKnockedPinsNumber_ShouldReturnAddedKnockedDownPin(
             List<Integer> previousRolls,
             Integer rollToTest) {
-        previousRolls.forEach(defaultFrame::addRoll);
-        assertThatThrownBy(() -> defaultFrame.addRoll(rollToTest))
+        previousRolls.stream()
+                .map(Chance::with)
+                .forEach(defaultFrame::addRoll);
+        assertThatThrownBy(() -> defaultFrame.addRoll(Chance.with(rollToTest)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(MUST_BE_POSITIVE);
     }
@@ -53,9 +57,13 @@ class DefaultFrameTest {
             List<Integer> previousExtraRolls,
             Integer extraRollToTest,
             Optional<Integer> expected) {
-        rolls.forEach(defaultFrame::addRoll);
-        previousExtraRolls.forEach(defaultFrame::addExtraRoll);
-        Optional<Integer> result = defaultFrame.addExtraRoll(extraRollToTest);
+        rolls.stream()
+                .map(Chance::with)
+                .forEach(defaultFrame::addRoll);
+        previousExtraRolls.stream()
+                .map(Chance::with)
+                .forEach(defaultFrame::addExtraRoll);
+        Optional<Integer> result = defaultFrame.addExtraRoll(Chance.with(extraRollToTest));
         assertThat(result).isEqualTo(expected);
     }
 
@@ -65,9 +73,13 @@ class DefaultFrameTest {
             List<Integer> rolls,
             List<Integer> previousExtraRolls,
             Integer extraRollToTest) {
-        rolls.forEach(defaultFrame::addRoll);
-        previousExtraRolls.forEach(defaultFrame::addExtraRoll);
-        assertThatThrownBy(() -> defaultFrame.addExtraRoll(extraRollToTest))
+        rolls.stream()
+                .map(Chance::with)
+                .forEach(defaultFrame::addRoll);
+        previousExtraRolls.stream()
+                .map(Chance::with)
+                .forEach(defaultFrame::addExtraRoll);
+        assertThatThrownBy(() -> defaultFrame.addExtraRoll(Chance.with(extraRollToTest)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(MUST_BE_POSITIVE);
     }
@@ -76,8 +88,12 @@ class DefaultFrameTest {
     @MethodSource("com.rgonzalez.bowling.model.DefaultFrameTestData#provideScoreTestData")
     void getScore_ShouldReturnSumOfKnockedDownPins(List<Integer> rolls, List<Integer> extraRolls,
                                                    Integer expectedScore) {
-        rolls.forEach(defaultFrame::addRoll);
-        extraRolls.forEach(defaultFrame::addExtraRoll);
+        rolls.stream()
+                .map(Chance::with)
+                .forEach(defaultFrame::addRoll);
+        extraRolls.stream()
+                .map(Chance::with)
+                .forEach(defaultFrame::addExtraRoll);
         Integer result = defaultFrame.getScore();
         assertThat(result).isEqualTo(expectedScore);
     }
@@ -87,8 +103,12 @@ class DefaultFrameTest {
     void isFinished_ShouldReturnIfFinished(List<Integer> rolls,
                                            List<Integer> extraRolls,
                                            boolean expected) {
-        rolls.forEach(defaultFrame::addRoll);
-        extraRolls.forEach(defaultFrame::addExtraRoll);
+        rolls.stream()
+                .map(Chance::with)
+                .forEach(defaultFrame::addRoll);
+        extraRolls.stream()
+                .map(Chance::with)
+                .forEach(defaultFrame::addExtraRoll);
         boolean result = defaultFrame.isFinished();
         assertThat(result).isEqualTo(expected);
     }
@@ -96,7 +116,9 @@ class DefaultFrameTest {
     @ParameterizedTest
     @MethodSource("com.rgonzalez.bowling.model.DefaultFrameTestData#provideStrikeTestData")
     void isStrike_WhenAllPinsAreKnockedDownOnFirstRoll_ShouldReturnTrue(List<Integer> rolls, boolean expected) {
-        rolls.forEach(defaultFrame::addRoll);
+        rolls.stream()
+                .map(Chance::with)
+                .forEach(defaultFrame::addRoll);
         boolean result = defaultFrame.isStrike();
         assertThat(result).isEqualTo(expected);
     }
@@ -104,15 +126,17 @@ class DefaultFrameTest {
     @ParameterizedTest
     @MethodSource("com.rgonzalez.bowling.model.DefaultFrameTestData#provideSpareTestData")
     void isSpare_WhenAllPinsAreKnockedDownMoreThanOneRoll_ShouldReturnTrue(List<Integer> rolls, boolean expected) {
-        rolls.forEach(defaultFrame::addRoll);
+        rolls.stream()
+                .map(Chance::with)
+                .forEach(defaultFrame::addRoll);
         boolean result = defaultFrame.isSpare();
         assertThat(result).isEqualTo(expected);
     }
 
     @Test
     void getCumulativeScore_ShouldReturnPreviousFrameScorePlusFrameScore() {
-        defaultFrame.addRoll(4);
-        defaultFrame.addRoll(5);
+        defaultFrame.addRoll(Chance.with(4));
+        defaultFrame.addRoll(Chance.with(5));
         defaultFrame.setPreviousFrameScore(20);
         Integer result = defaultFrame.getCumulativeScore();
         assertThat(result).isEqualTo(29);
@@ -122,7 +146,9 @@ class DefaultFrameTest {
     @MethodSource("com.rgonzalez.bowling.model.DefaultRollHandlerTestData#provideIsFinishedTestData")
     void isRollsFinished_WhenMaxPinsReached_ShouldReturnTrue(List<Integer> rolls,
                                                              boolean expected) {
-        rolls.forEach(defaultFrame::addRoll);
+        rolls.stream()
+                .map(Chance::with)
+                .forEach(defaultFrame::addRoll);
         boolean result = defaultFrame.isRollsFinished();
         Assertions.assertThat(result).isEqualTo(expected);
     }
@@ -130,26 +156,32 @@ class DefaultFrameTest {
     @ParameterizedTest
     @MethodSource("com.rgonzalez.bowling.model.DefaultFrameTestData#provideVariableSizeRollKnockedDownPins")
     void getRolls(List<Integer> rolls) {
-        rolls.forEach(defaultFrame::addRoll);
-        Stream<Integer> result = defaultFrame.getRolls();
+        rolls.stream()
+                .map(Chance::with)
+                .forEach(defaultFrame::addRoll);
+        Stream<Chance> result = defaultFrame.getRolls();
         testRolls(rolls, result);
     }
 
     @ParameterizedTest
     @MethodSource("com.rgonzalez.bowling.model.DefaultFrameTestData#provideVariableSizeExtraRollKnockedDownPins")
     void getExtraRolls(List<Integer> rolls, List<Integer> extraRolls) {
-        rolls.forEach(defaultFrame::addRoll);
-        extraRolls.forEach(defaultFrame::addExtraRoll);
-        Stream<Integer> result = defaultFrame.getExtraRolls();
+        rolls.stream()
+                .map(Chance::with)
+                .forEach(defaultFrame::addRoll);
+        extraRolls.stream()
+                .map(Chance::with)
+                .forEach(defaultFrame::addExtraRoll);
+        Stream<Chance> result = defaultFrame.getExtraRolls();
         testRolls(extraRolls, result);
     }
 
-    private void testRolls(List<Integer> rolls, Stream<Integer> result) {
-        List<Integer> resultList = result.collect(Collectors.toList());
+    private void testRolls(List<Integer> rolls, Stream<Chance> result) {
+        List<Chance> resultList = result.collect(Collectors.toList());
         if (!resultList.isEmpty()) {
             IntStream.range(0, rolls.size())
                     .forEach(i -> Assertions.assertThat(resultList.get(i))
-                            .isEqualTo(rolls.get(i)));
+                            .isEqualTo(Chance.with(rolls.get(i))));
         }
         Assertions.assertThat(resultList.size()).isEqualTo(rolls.size());
     }

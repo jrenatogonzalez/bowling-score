@@ -8,13 +8,14 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.rgonzalez.bowling.common.Validations.checkIfIsPositive;
+import static com.rgonzalez.bowling.common.Validations.checkIfNonNull;
 
 @Log
 public class DefaultRollHandler implements RollHandler {
     private final Integer maxRolls;
     private final Integer maxPins;
     private boolean maxPinsPerRoll = false;
-    private final List<Integer> rolls = new ArrayList<>();
+    private final List<Chance> rolls = new ArrayList<>();
 
     public DefaultRollHandler(Integer maxRolls, Integer maxPins, boolean maxPinsPerRoll) {
         this.maxRolls = maxRolls;
@@ -29,24 +30,25 @@ public class DefaultRollHandler implements RollHandler {
     }
 
     @Override
-    public Optional<Integer> add(int knockedDownPins) {
-        checkIfIsPositive(knockedDownPins, "knockedDownPins");
+    public Optional<Integer> add(Chance chance) {
+        checkIfNonNull(chance, "chance");
+        checkIfIsPositive(chance.getPinFalls(), "knockedDownPins");
         if (willExceedMaxRolls()) {
             log.fine("Request to add a new roll was rejected, it will exceed max rolls.");
             return Optional.empty();
         }
-        if (willExceedRollPinCapacity(knockedDownPins)) {
+        if (willExceedRollPinCapacity(chance.getPinFalls())) {
             log.fine(String.format("Request to add %d knockedDownPins was rejected, it will exceed max pins per roll.",
-                    knockedDownPins));
+                    chance.getPinFalls()));
             return Optional.empty();
         }
-        if (willExceedCapacity(knockedDownPins)) {
+        if (willExceedCapacity(chance.getPinFalls())) {
             log.fine(String.format("Request to add %d knockedDownPins was rejected, it will exceed max pins.",
-                    knockedDownPins));
+                    chance.getPinFalls()));
             return Optional.empty();
         }
-        rolls.add(knockedDownPins);
-        return Optional.of(knockedDownPins);
+        rolls.add(chance);
+        return Optional.of(chance.getPinFalls());
     }
 
     @Override
@@ -55,18 +57,19 @@ public class DefaultRollHandler implements RollHandler {
             throw new IllegalArgumentException("Invalid rollIndex argument.");
         }
         return (rollIndex > (rolls.size() - 1)) ?
-                Optional.empty() : Optional.of(rolls.get(rollIndex));
+                Optional.empty() : Optional.of(rolls.get(rollIndex).getPinFalls());
     }
 
     @Override
     public Integer getTotalKnockedDownPins() {
         return rolls.stream()
+                .map(chance -> chance.getPinFalls())
                 .reduce(Integer::sum)
                 .orElse(0);
     }
 
     @Override
-    public Stream<Integer> getRolls() {
+    public Stream<Chance> getRolls() {
         return rolls.stream();
     }
 

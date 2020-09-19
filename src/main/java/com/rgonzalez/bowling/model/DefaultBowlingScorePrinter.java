@@ -65,7 +65,7 @@ public class DefaultBowlingScorePrinter implements BowlingScorePrinter {
             sb.append(STRIKE).append(TAB);
             sb.append(
                     frame.getExtraRolls()
-                            .map(roll -> roll == 10 ? STRIKE : String.valueOf(roll))
+                            .map(chance -> chance.getPinFalls() == 10 ? STRIKE : chance.toString())
                             .collect(Collectors.joining(TAB))
             );
             sb.append(CR);
@@ -77,12 +77,13 @@ public class DefaultBowlingScorePrinter implements BowlingScorePrinter {
 
     private String bowlerSpareFrame(Frame frame, boolean lastFrame) {
         StringBuilder sb = new StringBuilder();
-        List<Integer> rolls = frame.getRolls().collect(Collectors.toList());
+        List<Chance> rolls = frame.getRolls()
+                .collect(Collectors.toList());
         IntStream.range(0, rolls.size())
                 .forEach(i -> sb.append(i == (rolls.size() - 1) ? SPARE + TAB : rolls.get(i) + TAB));
         if (lastFrame) {
             sb.append(frame.getExtraRolls()
-                    .map(String::valueOf)
+                    .map(Chance::toString)
                     .findFirst().orElse(""))
                     .append(CR);
         }
@@ -92,7 +93,7 @@ public class DefaultBowlingScorePrinter implements BowlingScorePrinter {
     private String bowlerSimpleFrame(Frame frame, boolean lastFrame) {
         StringBuilder sb = new StringBuilder();
         sb.append(frame.getRolls()
-                .map(roll -> String.valueOf(roll))
+                .map(Chance::toString)
                 .collect(Collectors.joining(TAB))
         );
         if (lastFrame) {

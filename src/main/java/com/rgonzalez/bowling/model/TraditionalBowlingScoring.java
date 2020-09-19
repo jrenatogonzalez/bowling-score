@@ -16,13 +16,14 @@ public class TraditionalBowlingScoring implements BowlingScoring {
     }
 
     @Override
-    public Optional<Integer> addRoll(String bowlerName, int knockedDownPins) {
+    public Optional<Integer> addRoll(String bowlerName, Chance chance) {
         checkIfNonNull(bowlerName, "bowlerName");
         checkIfNotBlankOrEmpty(bowlerName, "bowlerName");
+        checkIfNonNull(chance, "chance");
         String name = bowlerName.trim();
         BowlerFrames bowlerFramesToAddRoll;
         bowlerFramesToAddRoll = bowlerFramesMap.getOrDefault(name, createBowlerFrame(name));
-        Optional<Integer> result = bowlerFramesToAddRoll.addRoll(knockedDownPins);
+        Optional<Integer> result = bowlerFramesToAddRoll.addRoll(chance);
         if (!bowlerFramesMap.containsKey(name) && result.isPresent()) {
             bowlerFramesMap.put(name, bowlerFramesToAddRoll);
         }

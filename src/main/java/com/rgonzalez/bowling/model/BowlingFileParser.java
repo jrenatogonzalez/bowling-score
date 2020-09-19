@@ -53,9 +53,9 @@ public class BowlingFileParser implements BowlingParser {
         Matcher matcher = bowlerResultsPattern.matcher(line);
         if (matcher.find()) {
             String name = matcher.group(1);
-            Optional<Integer> pins = extractPins(matcher.group(2));
-            if (pins.isPresent()) {
-                BowlerResults bowlerResults = new BowlerResults(name, pins.get());
+            Optional<Chance> chanceOptional = extractChance(matcher.group(2));
+            if (chanceOptional.isPresent()) {
+                BowlerResults bowlerResults = new BowlerResults(name, chanceOptional.get());
                 optionalBowlerResults = Optional.of(bowlerResults);
             } else {
                 optionalBowlerResults = Optional.empty();
@@ -66,14 +66,14 @@ public class BowlingFileParser implements BowlingParser {
         return optionalBowlerResults;
     }
 
-    private Optional<Integer> extractPins(String pinsExpression) {
+    private Optional<Chance> extractChance(String pinsExpression) {
         pinsExpression = pinsExpression.trim();
         if (pinsExpression.equals(FAUL_CHARACTER)) {
-            return Optional.of(0);
+            return Optional.of(Chance.withFoul());
         } else {
             try {
-                Integer pins = Integer.parseInt(pinsExpression);
-                return Optional.of(pins);
+                Integer pinFalls = Integer.parseInt(pinsExpression);
+                return Optional.of(Chance.with(pinFalls));
             } catch (Throwable t) {
                 return Optional.empty();
             }

@@ -29,18 +29,18 @@ public class DefaultBowlerFrames implements BowlerFrames {
     }
 
     @Override
-    public Optional<Integer> addRoll(int knockedDownPins) {
+    public Optional<Integer> addRoll(Chance chance) {
         if (!isFinished()) {
             int currentFrameIndex = getCurrentFrameIndex();
             Frame currentFrame = frames.get(currentFrameIndex);
             Optional<Integer> pinFalls;
             if (currentFrame.isRollsFinished() && isStrikeOrSpare(currentFrame)) {
-                pinFalls = currentFrame.addExtraRoll(knockedDownPins);
+                pinFalls = currentFrame.addExtraRoll(chance);
             } else {
-                pinFalls = currentFrame.addRoll(knockedDownPins);
+                pinFalls = currentFrame.addRoll(chance);
             }
-            addExtraRoll(this::isStrike, pinFalls, currentFrameIndex - 1);
-            addExtraRoll(this::isStrikeOrSpare, pinFalls, currentFrameIndex);
+            addExtraRoll(this::isStrike, pinFalls, chance,currentFrameIndex - 1);
+            addExtraRoll(this::isStrikeOrSpare, pinFalls, chance, currentFrameIndex);
             return pinFalls;
         }
         return Optional.empty();
@@ -49,12 +49,13 @@ public class DefaultBowlerFrames implements BowlerFrames {
     private void addExtraRoll(
             Function<Frame, Boolean> frameCondition,
             Optional<Integer> knockedDownPins,
+            Chance chance,
             int currentFrameIndex) {
         int previousFrameIndex = currentFrameIndex - 1;
         if (knockedDownPins.isPresent() && previousFrameIndex >= 0) {
             Frame previousFrame = frames.get(previousFrameIndex);
             if (frameCondition.apply(previousFrame)) {
-                previousFrame.addExtraRoll(knockedDownPins.get());
+                previousFrame.addExtraRoll(chance);
             }
         }
         if (currentFrameIndex >= 0) {
